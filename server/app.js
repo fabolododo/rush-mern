@@ -39,6 +39,9 @@ app.use(cors({
     return callback(null, true);
   }
 }));
+
+
+
 //Définition du routeur
 const router = express.Router();
 app.use("/users", router);
