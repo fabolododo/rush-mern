@@ -95,6 +95,7 @@ async function login(req, res) {
   }
 }
 
+
 async function listUser(req, res) {
 
   User.find({},function (err, users){
@@ -107,8 +108,54 @@ async function listUser(req, res) {
   });
   
 } 
+
+async function UpdateUser(req, res) {
+
+  User.findByIdAndUpdate(req.params.id, { $set : req.body } , function(err, users){
+    if(err){
+   res.status(400);
+   res.send(err);
+   return;
+  }
+  res.send({users});
+  });
+};
+
+async function DeleteUser(req, res) {
+
+  User.findByIdAndRemove(req.params.id,function(err, users){
+    if(!users)
+    res.status(404).send('data not found');
+    else
+    
+    users.delete().then( users => {
+      res.json('User deleted');
+    })
+  });
+}
+
+
+async function DetailsUser(req, res) {
+
+  User.findById(req.params.id, function(err, users){
+
+    if(err){
+      res.send('Something went wrong');
+      next();
+    }
+    res.json(users);
+  
+  });
+
+  }
+
+
+
 //On exporte nos deux fonctions
 
 exports.login = login;
 exports.signup = signup;
 exports.listUser = listUser;
+exports.UpdateUser = UpdateUser;
+exports.DeleteUser = DeleteUser;
+exports.DetailsUser = DetailsUser;
