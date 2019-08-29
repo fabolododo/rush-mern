@@ -20,7 +20,9 @@ export default {
   signup: function(send) {
     return axios.post(`${burl}/users/signup`, send, { headers: headers });
   },
-
+  ListUser: function(send) {
+    return axios.post(`${burl}/users/ListUser`, send, {headers: headers });
+  },
   isAuth: function() {
     return localStorage.getItem("token") !== null;
   },
