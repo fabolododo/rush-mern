@@ -2,11 +2,20 @@ import React from "react";
 import axios from "axios";
 // import API from "../utils/API";
 
+const User= props => (
+    <tr>
+      <td>{props.user.name}</td>
+      <td>{props.user.email}</td>
+    </tr>
+  )
+
+
 export class ListUser extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            users: []
+            users: [],
+            displaySnackBar: false
         };
     }
 
@@ -22,6 +31,7 @@ export class ListUser extends React.Component {
     //     }
     // };
 
+    // API Request by Axios 
     componentDidMount() {
         axios.get(`http://localhost:4242/users/listUser`)
             .then(response => {
@@ -31,10 +41,10 @@ export class ListUser extends React.Component {
                 console.log(error);
             })
     }
-
+    // Create a map of all the users
     UserList() {
         return this.state.users.map(function(currentUser, i){
-            return <User user={currentUSer} key={i} />
+            return <User user={ currentUser } key={i} />
         })
     };
 
@@ -44,9 +54,18 @@ export class ListUser extends React.Component {
     };
 
     render() {
+        const snackMessage = this.state;
         return (
-            <div>
-                <h3> Users List</h3>
+            <div className="UserList">
+                <h1> Users List</h1>
+         {this.state.displaySnackBar ? (
+          <div
+            id="snackbar"
+            style={{fontSize:"25px", color:"red", textAlign:"center"}}
+          >
+            {snackMessage}
+          </div>
+        ) : null}
                 <table className="table table-striped" style={{ marginTop: 20 }} >
                     <thead>
                         <tr>
