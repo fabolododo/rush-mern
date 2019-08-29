@@ -95,7 +95,20 @@ async function login(req, res) {
   }
 }
 
+async function listUser(req, res) {
+
+  User.find({},function (err, users){
+    if(err){
+      res.send('Something went wrong');
+      next();
+    }
+    res.json(users);
+  
+  });
+  
+} 
 //On exporte nos deux fonctions
 
 exports.login = login;
 exports.signup = signup;
+exports.listUser = listUser;
