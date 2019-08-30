@@ -1,10 +1,11 @@
 import React from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 // import API from "../utils/API";
 
 const User= props => (
     <tr>
-      <td>{props.user.name}</td>
+      <td><Link to={`/listUser/${props.user._id}`}>{props.user.name}</Link></td>
       <td>{props.user.email}</td>
     </tr>
   )

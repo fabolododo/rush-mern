@@ -141,6 +141,7 @@ async function DetailsUser(req, res) {
     console.log(req.params.id);
     
     if(err){
+      res.status(400);
       res.send('Something went wrong');
       return;
     }
