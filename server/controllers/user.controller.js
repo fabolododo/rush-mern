@@ -112,6 +112,8 @@ async function listUser(req, res) {
 async function UpdateUser(req, res) {
 
   User.findByIdAndUpdate(req.params.id, { $set : req.body } , function(err, users){
+    console.log("toto j'update");
+    
     if(err){
    res.status(400);
    res.send(err);
