@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import { Modal, Button } from "react-bootstrap";
 
@@ -9,7 +10,8 @@ class User extends Component {
       name: "",
       email: "",
       password: "",
-      userModal: false
+      userModal: false,
+      displaySnackBar: false
     };
   }
 
@@ -34,20 +36,60 @@ class User extends Component {
     this.setState({ newPassword: e.target.value });
   };
 
+  handleCPassword = e => {
+    this.setState({ newCPassword: e.target.value });
+  };
+
+  handleSnackbar = () => {
+    this.setState({ displaySnackBar: true });
+    setTimeout(() => this.setState({ displaySnackBar: false }), 3000);
+  };
+
+  displayHandleSnackbar = (message) => {
+    console.error(message);
+      this.setState({ snackMessage: message });
+      this.handleSnackbar();
+  }
+
   handleEditUser = e => {
     e.preventDefault();
     this.setState({ userModal: false });
+    if (this.state.newPassword !== this.state.newCPassword){
+        this.displayHandleSnackbar(" New Password & New Confirmation Password should have the same");
+        return;
+    }
+    if( /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/.test(this.state.newEmail) === false){
+        this.displayHandleSnackbar("Email must be valid");
+         return;
+    }
+    if (!this.state.newName || this.state.newName.length === 0) {
+        this.displayHandleSnackbar("Name must be required");
+        return;
+    };
+    if (!this.state.newEmail || this.state.newEmail.length === 0) {
+        this.displayHandleSnackbar("Email must be required");
+        return;
+    }
     var editUser = {
       name: this.state.newName,
       email: this.state.newEmail,
       password: this.state.newPassword,
       _id: this.props._id
     };
-
     this.props.onEditUser(editUser);
-    this.setState({ name: this.state.newName });
-    this.setState({ email: this.state.newEmail });
-    this.setState({ password: this.state.newPassword });
+
+    axios
+    .put( `http://localhost:4242/users/listUser/` + editUser._id + `/update`, editUser)
+    .then(response => {
+      this.setState({ name: this.state.newName });
+      this.setState({ email: this.state.newEmail });
+      this.setState({ password: this.state.newPassword });
+    })
+    .catch(err => {
+      console.log(err);
+      // window.location.reload();
+  });
+
   };
 
   handleDeleteUser = e => {
@@ -63,36 +105,34 @@ class User extends Component {
     }
   };
 
-  
+
 
   render() {
     const {
       newName,
       newEmail,
-      newPassword,
       name,
       email,
-      password
+      password,
+      snackMessage
     } = this.state;
     return (
+    <tbody>
       <tr>
-        <td><Link to={`listUser/${this.props._id}`}>{name}</Link></td>
-        <td>
+        <td scope="col"><Link to={`listUser/${this.props._id}`}>{name}</Link></td>
+        <td scope="col">
           {email}
         </td>
-        <td>
-        {password}
-        </td>
-        <td>
+        <td scope="col">
           <Button
             className="btn btn-info"
-            id={"edit" + name + email}
+            id={"edit" + name + email + password}
             onClick={() => this.setState({ userModal: true })}
           >
             Edit
           </Button>
         </td>
-        <td>
+        <td scope="col">
           <Button
             id={"delete" + name + email}
             className="btn btn-danger"
@@ -141,8 +181,19 @@ class User extends Component {
                     id="password"
                     name="password"
                     placeholder="password"
-                    onChange={this.password}
-                    value={newPassword}
+                    onChange={this.handlePassword}
+                    className="form-control"
+                  />
+                </div>
+              </div>
+              <div className="form-group">
+                <label className="col-md-4 control-label">Confirmation Password</label>
+                <div className="col-md-4">
+                  <input
+                    id="cPassword"
+                    name="cPassword"
+                    placeholder=" Confirmation Password"
+                    onChange={this.handleCPassword}
                     className="form-control"
                   />
                 </div>
@@ -159,6 +210,17 @@ class User extends Component {
           </Modal.Footer>
         </Modal>
       </tr>
+      <tr>
+      {this.state.displaySnackBar ? (
+            <div
+                id="snackbar"
+                style={{fontSize:"25px", color:"red", textAlign:"center"}}
+            >
+                {snackMessage}
+            </div>
+            ) : null}
+      </tr>
+    </tbody>
     );
   }
 }
