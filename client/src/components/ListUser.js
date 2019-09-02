@@ -1,14 +1,8 @@
 import React from "react";
+import User from "./User";
 import axios from "axios";
-import { Link } from "react-router-dom";
-// import API from "../utils/API";
 
-const User= props => (
-    <tr>
-      <td><Link to={`/listUser/${props.user._id}`}>{props.user.name}</Link></td>
-      <td>{props.user.email}</td>
-    </tr>
-  )
+
 
 
 export class ListUser extends React.Component {
@@ -16,21 +10,19 @@ export class ListUser extends React.Component {
         super(props);
         this.state = {
             users: [],
+            name: "",
+            email: "",
+            password: "",
+            userFormModal: false,
             displaySnackBar: false
         };
+
+        this.handleName = this.handleName.bind(this);
+        this.handleEmail = this.handleEmail.bind(this);
+        this.handlePassword = this.handlePassword.bind(this);
     }
 
-    // send = async () => {
-    //     try {
-    //         const {data} ={name: ""}
-            // const { data } = await API.ListUser();
-    //         console.log(data);
-    //     }catch (error) {
-    //         console.error(error.response.data.text);
-    //         StyleSheetList.setState({ snackMessage: error.response.data.text });
-    //         this.handleSnackBar();
-    //     }
-    // };
+
 
     // API Request by Axios 
     componentDidMount() {
@@ -41,13 +33,41 @@ export class ListUser extends React.Component {
             .catch(function (error) {
                 console.log(error);
             })
+        
+        this.setState({ name: this.props.name });
+        this.setState({ newName: this.props.name });
+        this.setState({ email: this.props.email });
+        this.setState({ newEmail: this.props.email });
+
     }
-    // Create a map of all the users
-    UserList() {
-        return this.state.users.map(function(currentUser, i){
-            return <User user={ currentUser } key={i} />
-        })
+
+    handleEditUser = editUser => {
+        
+        axios
+          .put( `http://localhost:4242/users/listUser/` + editUser._id + `/update`, editUser)
+          .then(response => {
+            this.setState({ snackMessage: "User Updated Successfully!" });
+            this.handleSnackbar();
+          })
+          .catch(err => {
+            console.log(err);
+            this.setState({ snackMessage: "User Update Failed!" });
+            this.handleSnackbar();
+          });
+      };
+
+    handleName = e => {
+        this.setState({ newName: e.target.value });
     };
+
+    handleEmail = e => {
+        this.setState({ newEmail: e.target.value });
+    };
+
+    handlePassword = e => {
+        this.setState({ newPassword: e.target.value });
+    };
+
 
     handleSnackbar = () => {
         this.setState({ displaySnackBar: true });
@@ -55,32 +75,50 @@ export class ListUser extends React.Component {
     };
 
     render() {
-        const snackMessage = this.state;
+        var { 
+            users,
+            snackMessage
+        } = this.state;
+
+        var renderUsers = () => {
+            if (users.length === 0){
+                return <tr>{users}</tr>;
+            } else {
+                return users.map((user,index) => (
+                    <User 
+                    {...user}
+                    key={index}
+                    onEditUser={this.handleEditUser}
+                    />
+                ));
+            }
+        };
+
         return (
-            <div className="UserList">
-                <h1> Users List</h1>
-         {this.state.displaySnackBar ? (
-          <div
-            id="snackbar"
-            style={{fontSize:"25px", color:"red", textAlign:"center"}}
-          >
-            {snackMessage}
-          </div>
-        ) : null}
-                <table className="table table-striped" style={{ marginTop: 20 }} >
+            <div>
+                <table className="table">
                     <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                        </tr>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">email</th>
+                        <th scope="col">password</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                        <th />
+                    </tr>
                     </thead>
-                    <tbody>
-                        { this.UserList() }
-                    </tbody>
+                    <tbody>{renderUsers()}</tbody>
                 </table>
+                {this.state.displaySnackBar ? (
+            <div
+                id="snackbar"
+                style={{fontSize:"25px", color:"red", textAlign:"center"}}
+            >
+                {snackMessage}
             </div>
-        )
+            ) : null}
+            </div>
+        );
     }
 
 }
-
