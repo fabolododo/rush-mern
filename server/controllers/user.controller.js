@@ -138,10 +138,12 @@ async function DeleteUser(req, res) {
 async function DetailsUser(req, res) {
 
   User.findById(req.params.id, function(err, users){
-
+    console.log(req.params.id);
+    
     if(err){
+      res.status(400);
       res.send('Something went wrong');
-      next();
+      return;
     }
     res.json(users);
   
