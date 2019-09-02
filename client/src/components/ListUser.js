@@ -38,11 +38,18 @@ export class ListUser extends React.Component {
         this.setState({ newName: this.props.name });
         this.setState({ email: this.props.email });
         this.setState({ newEmail: this.props.email });
-
+        this.setState({ password: this.props.password });
+        this.setState({ newPassword: this.props.password });
+        this.setState({ newCPassword: this.props.password });
     }
 
     handleEditUser = editUser => {
-        
+        if (this.props.newPassword !== this.props.newCPassword){
+            console.log(this.props.newCPassword);
+            
+            this.displayHandleSnackbar(" New Password & New Confirmation Password should have the same");
+            return;
+        }
         axios
           .put( `http://localhost:4242/users/listUser/` + editUser._id + `/update`, editUser)
           .then(response => {
@@ -51,9 +58,11 @@ export class ListUser extends React.Component {
           })
           .catch(err => {
             console.log(err);
-            this.setState({ snackMessage: "User Update Failed!" });
+            this.setState({ snackMessage: err.response.data.text });
             this.handleSnackbar();
-          });
+            // window.location.reload();
+        });
+        
       };
 
     handleName = e => {
@@ -68,6 +77,11 @@ export class ListUser extends React.Component {
         this.setState({ newPassword: e.target.value });
     };
 
+    displayHandleSnackbar = (message) => {
+        console.error(message);
+          this.setState({ snackMessage: message });
+          this.handleSnackbar();
+      }
 
     handleSnackbar = () => {
         this.setState({ displaySnackBar: true });
@@ -96,18 +110,18 @@ export class ListUser extends React.Component {
 
         return (
             <div>
+                <h1> Users List</h1>
                 <table className="table">
                     <thead>
                     <tr>
                         <th scope="col">Name</th>
                         <th scope="col">email</th>
-                        <th scope="col">password</th>
                         <th scope="col">Edit</th>
                         <th scope="col">Delete</th>
                         <th />
                     </tr>
                     </thead>
-                    <tbody>{renderUsers()}</tbody>
+                    {renderUsers()}
                 </table>
                 {this.state.displaySnackBar ? (
             <div
