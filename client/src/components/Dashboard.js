@@ -4,12 +4,6 @@ import { Button, Card } from "react-bootstrap";
 import API from "../utils/API";
 import Axios from "axios";
 
-// const User= props => (
-//   <tr>
-//     <td>{props.userProps.name}</td>
-//     <td>{props.userProps.email}</td>
-//   </tr>
-// )
 
 export class Dashboard extends Component {
   constructor(props){
@@ -34,12 +28,6 @@ export class Dashboard extends Component {
     this.props.history.push('/');
   };
 
-  // UserDetails() {
-  //   console.log(typeof this.state.users);
-  //   console.log(this.state.users);
-  //   return this.state.users.map((currentUser, i) => <User user={ currentUser } key={i} />
-    // )
-  // }
 
   UserDetails() {
       console.log(this.state.users);
@@ -52,10 +40,6 @@ export class Dashboard extends Component {
       <Button variant="primary">Go somewhere</Button>
     </Card.Body> : undefined);
     
-    // <tr>
-    //   <td>{ this.state.users.name }</td>
-    //   <td>{ this.state.users.email }</td>
-    // </tr> 
   }
 
   render() {
@@ -72,35 +56,4 @@ export class Dashboard extends Component {
       </div>
     );
   }
-
-  // render() {
-  //   const snackMessage = this.state;
-  //   return (
-  //       <div className="UserList">
-  //           <h1> Users Details</h1>
-  //    {this.state.displaySnackBar ? (
-  //     <div
-  //       id="snackbar"
-  //       style={{fontSize:"25px", color:"red", textAlign:"center"}}
-  //     >
-  //       {snackMessage}
-  //     </div>
-  //   ) : null}
-  //           <table className="table table-striped" style={{ marginTop: 20 }} >
-  //               <thead>
-  //                   <tr>
-  //                       <th>Name</th>
-  //                       <th>Email</th>
-  //                   </tr>
-  //               </thead>
-  //               <tbody>
-                    // { this.UserDetails() }
-  //               </tbody>
-  //           </table>
-  //           {/* <Button onClick={this.disconnect} block bssize="large" type="submit">
-  //         Se déconnecter
-  //       </Button> */}
-  //       </div>
-  //   )
-  // }
 }
