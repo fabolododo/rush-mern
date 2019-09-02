@@ -111,8 +111,42 @@ async function listUser(req, res) {
 
 async function UpdateUser(req, res) {
 
-  User.findByIdAndUpdate(req.params.id, { $set : req.body } , function(err, users){
-    console.log("toto j'update");
+  var { password, email, name } = req.body;
+
+  password= passwordHash.generate(password)
+  console.log(password);
+  const newUser = {
+    name,
+    email,
+    password
+  };
+
+  try {
+    const findUser = await User.findOne({ $or: [{ name: name },{
+      email: email
+    }]});
+    console.log("findUser : ", findUser);
+    
+    if (findUser) {
+      if (findUser.email === email) {
+        return res.status(400).json({
+          text: "Email already exists"
+        });
+      }
+      if (findUser.name === name) {
+        return res.status(400).json({
+          text: "Name already exists"
+        });
+      }
+    }
+  } catch (error) {
+    console.log("ca a crash", error);
+    
+    return res.status(500).json({ error });
+  }
+
+  
+  User.findByIdAndUpdate(req.params.id, { $set : newUser } , function(err, users){
     
     if(err){
    res.status(400);
