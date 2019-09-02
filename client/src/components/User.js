@@ -182,6 +182,7 @@ class User extends Component {
                     name="password"
                     placeholder="password"
                     onChange={this.handlePassword}
+                    type="password"
                     className="form-control"
                   />
                 </div>
@@ -194,6 +195,7 @@ class User extends Component {
                     name="cPassword"
                     placeholder=" Confirmation Password"
                     onChange={this.handleCPassword}
+                    type="password"
                     className="form-control"
                   />
                 </div>
