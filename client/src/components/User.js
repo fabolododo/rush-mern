@@ -73,7 +73,7 @@ class User extends Component {
     })
     .catch(err => {
       console.log(err);
-  });
+    });
 
   };
 
@@ -98,18 +98,19 @@ class User extends Component {
       newEmail,
       name,
       email,
-      password,
       snackMessage
     } = this.state;
     return (
     <tbody>
       <tr>
-        <td scope="col"><Link to={`listUser/${this.props._id}`}>{name}</Link></td>
+        <td scope="col">
+          {name}
+        </td>
         <td scope="col">
           {email}
         </td>
         <td scope="col">
-          <Button
+          {/* <Button
             className="btn btn-info"
             id={"edit" + name + email + password}
             onClick={() => this.setState({ userModal: true })}
@@ -124,7 +125,7 @@ class User extends Component {
             onClick={this.handleDeleteUser}
           >
             Delete
-          </Button>
+          </Button> */}
         </td>
 
         <Modal show={this.state.userModal} style={{ opacity: 1 }}>
