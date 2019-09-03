@@ -15,8 +15,9 @@ export class Login extends React.Component {
     try {
       const { data } = await API.login(name, password);
       localStorage.setItem("token", data.token);
+      localStorage.setItem("id", data.id);
       console.log(data);
-      this.props.history.push('/listUser');
+      this.props.history.push(`listUser/${data.id}`);
     } catch (error) {
       console.error(error.response.data.text);
       this.setState({ snackMessage: error.response.data.text });
