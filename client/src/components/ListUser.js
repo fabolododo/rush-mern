@@ -1,6 +1,7 @@
 import React from "react";
 import User from "./User";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 
 
@@ -13,6 +14,7 @@ export class ListUser extends React.Component {
             name: "",
             email: "",
             password: "",
+            id:"",
             userFormModal: false,
             displaySnackBar: false
         };
@@ -41,6 +43,7 @@ export class ListUser extends React.Component {
         this.setState({ password: this.props.password });
         this.setState({ newPassword: this.props.password });
         this.setState({ newCPassword: this.props.password });
+        
     }
 
     handleEditUser = editUser => {
@@ -53,6 +56,7 @@ export class ListUser extends React.Component {
         axios
           .put( `http://localhost:4242/users/listUser/` + editUser._id + `/update`, editUser)
           .then(response => {
+              
             this.setState({ snackMessage: "User Updated Successfully!" });
             this.handleSnackbar();
           })
@@ -62,7 +66,6 @@ export class ListUser extends React.Component {
             this.handleSnackbar();
             // window.location.reload();
         });
-        
       };
 
     handleName = e => {
@@ -116,13 +119,13 @@ export class ListUser extends React.Component {
                     <tr>
                         <th scope="col">Name</th>
                         <th scope="col">email</th>
-                        <th scope="col">Edit</th>
-                        <th scope="col">Delete</th>
-                        <th />
                     </tr>
                     </thead>
                     {renderUsers()}
                 </table>
+                <div>
+                    <Link to={`/ListUser/`+localStorage.getItem("id")}>Back to Profile</Link>
+                </div>
                 {this.state.displaySnackBar ? (
             <div
                 id="snackbar"
