@@ -111,10 +111,25 @@ async function listUser(req, res) {
 
 async function UpdateUser(req, res) {
 
-  var { password, email, name } = req.body;
+  var {cPassword, password, email, name } = req.body;
 
+  if (!name || name.length === 0)
+    return res.status(400).json({text: "name can't be blank "});
+
+    if (!email || email.length === 0)
+    return res.status(400).json({text: "email can't be blank "});
+
+  if (password !== cPassword)
+    return res.status(400).json({text: "Password and Confirmation Password should have the same"});
+
+  if( /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/.test(email) === false)
+    return res.status(400).json({text: "Email address must be valid "});
+
+
+
+
+  console.log(req.body);
   password= passwordHash.generate(password)
-  console.log(password);
   const newUser = {
     name,
     email,
