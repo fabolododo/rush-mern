@@ -85,6 +85,7 @@ async function login(req, res) {
         text: "Mot de passe incorrect"
       });
     return res.status(200).json({
+      id: findUser._id,
       token: findUser.getToken(),
       text: "Authentification réussi"
     });
@@ -116,8 +117,11 @@ async function UpdateUser(req, res) {
   if (!name || name.length === 0)
     return res.status(400).json({text: "name can't be blank "});
 
-    if (!email || email.length === 0)
+  if (!email || email.length === 0)
     return res.status(400).json({text: "email can't be blank "});
+
+  if (!password || password.length === 0)
+    return res.status(400).json({text: "password can't be blank "});
 
   if (password !== cPassword)
     return res.status(400).json({text: "Password and Confirmation Password should have the same"});
