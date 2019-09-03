@@ -54,26 +54,12 @@ class User extends Component {
   handleEditUser = e => {
     e.preventDefault();
     this.setState({ userModal: false });
-    if (this.state.newPassword !== this.state.newCPassword){
-        this.displayHandleSnackbar(" New Password & New Confirmation Password should have the same");
-        return;
-    }
-    if( /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/.test(this.state.newEmail) === false){
-        this.displayHandleSnackbar("Email must be valid");
-         return;
-    }
-    if (!this.state.newName || this.state.newName.length === 0) {
-        this.displayHandleSnackbar("Name must be required");
-        return;
-    };
-    if (!this.state.newEmail || this.state.newEmail.length === 0) {
-        this.displayHandleSnackbar("Email must be required");
-        return;
-    }
+
     var editUser = {
       name: this.state.newName,
       email: this.state.newEmail,
       password: this.state.newPassword,
+      cPassword: this.state.newCPassword,
       _id: this.props._id
     };
     this.props.onEditUser(editUser);
@@ -87,7 +73,6 @@ class User extends Component {
     })
     .catch(err => {
       console.log(err);
-      // window.location.reload();
   });
 
   };
