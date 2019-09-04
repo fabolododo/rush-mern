@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Button, Card, Modal, ButtonGroup } from "react-bootstrap";
-
 import API from "../utils/API";
 import axios from "axios";
+import logo from "../logo/logo.png";
+import { Navbar, Nav } from "react-bootstrap";
 
 
 export class Dashboard extends Component {
@@ -119,6 +120,23 @@ handleSnackbar = () => {
     } = this.state;
     return (
       <div className="User Details">
+        <Navbar bg="dark" variant="dark">
+            <Navbar.Brand>
+            <img
+                alt=""
+                src={logo}
+                width="30"
+                height="30"
+                className="d-inline-block align-top"
+            />
+            MicroBloggos
+            </Navbar.Brand>
+            <Nav className="mr-auto">
+                <Nav.Link href="/">Followers</Nav.Link>
+                <Nav.Link href="/">Post</Nav.Link>
+            </Nav>
+        </Navbar>
+        <br/>
         <h1>User Details</h1>
         <Card>
           <Card.Header as="h5">Featured</Card.Header>
@@ -128,14 +146,14 @@ handleSnackbar = () => {
               { this.state.email }
             </Card.Text>
             <ButtonGroup className="mr-2" aria-label="First group">
-              <Button variant="primary" onClick={() => this.setState({ userModal: true })}>Edit User</Button>
+              <Button variant="dark" onClick={() => this.setState({ userModal: true })}>Edit User</Button>
             </ButtonGroup>
             <ButtonGroup className="mr-2" aria-label="First group">
-              <Button variant="primary" onClick={this.redirectListUser}>List User</Button>
+              <Button variant="dark" onClick={this.redirectListUser}>List User</Button>
             </ButtonGroup>
           </Card.Body>
         </Card>
-        <Button onClick={this.disconnect} block bssize="large" type="submit">
+        <Button onClick={this.disconnect} variant="dark" block bssize="large" type="submit">
           Se déconnecter
         </Button>
 
