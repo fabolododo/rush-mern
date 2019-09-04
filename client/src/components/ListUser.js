@@ -2,6 +2,8 @@ import React from "react";
 import User from "./User";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import logo from "../logo/logo.png";
+import { Navbar, Nav } from "react-bootstrap";
 
 
 
@@ -112,7 +114,24 @@ export class ListUser extends React.Component {
         };
 
         return (
-            <div>
+            <div className="ListUser">
+                <Navbar bg="dark" variant="dark">
+                    <Navbar.Brand>
+                    <img
+                        alt=""
+                        src={logo}
+                        width="30"
+                        height="30"
+                        className="d-inline-block align-top"
+                    />
+                    MicroBloggos
+                    </Navbar.Brand>
+                    <Nav className="mr-auto">
+                        <Nav.Link href="/">Followers</Nav.Link>
+                        <Nav.Link href="/">Post</Nav.Link>
+                    </Nav>
+                </Navbar>
+                <br/>
                 <h1> Users List</h1>
                 <table className="table">
                     <thead>
