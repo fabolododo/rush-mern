@@ -1,7 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import API from "../utils/API";
+import logo from "../logo/logo.png";
+import { Navbar, Nav } from "react-bootstrap";
+
 
 export class Login extends React.Component {
   state = {
@@ -37,6 +39,25 @@ export class Login extends React.Component {
     const { name, password, snackMessage } = this.state;
     return (
       <div className="Login">
+        <Navbar bg="dark" variant="dark">
+          <Navbar.Brand>
+          <img
+            alt=""
+            src={logo}
+            width="30"
+            height="30"
+            className="d-inline-block align-top"
+          />
+          MicroBloggos
+          </Navbar.Brand>
+          <Nav className="mr-auto">
+            <Nav.Link href="/">Login</Nav.Link>
+            <Nav.Link href="/signup">Sign Up</Nav.Link>
+          </Nav>
+        </Navbar>
+        <br/>
+        <br/>
+        <h1>Login</h1>
          {this.state.displaySnackBar ? (
           <div
             id="snackbar"
@@ -45,27 +66,28 @@ export class Login extends React.Component {
             {snackMessage}
           </div>
         ) : null}
-        <FormGroup controlId="name" bssize="large">
-          <FormLabel>name</FormLabel>
-          <FormControl
-            autoFocus
-            type="text"
-            value={name}
-            onChange={this.handleChange}
-          />
-        </FormGroup>
-        <FormGroup controlId="password" bssize="large">
-          <FormLabel>Password</FormLabel>
-          <FormControl
-            value={password}
-            onChange={this.handleChange}
-            type="password"
-          />
-        </FormGroup>
-        <Button onClick={this.send} block bssize="large" type="submit">
-          Connexion
-        </Button>
-          <Link to="/signup">Register</Link>
+        <div className="LoginForm">
+          <FormGroup controlId="name" bssize="large">
+            <FormLabel>name</FormLabel>
+            <FormControl
+              autoFocus
+              type="text"
+              value={name}
+              onChange={this.handleChange}
+            />
+          </FormGroup>
+          <FormGroup controlId="password" bssize="large">
+            <FormLabel>Password</FormLabel>
+            <FormControl
+              value={password}
+              onChange={this.handleChange}
+              type="password"
+            />
+          </FormGroup>
+          <Button onClick={this.send} block bssize="large" variant="dark" type="submit">
+            Connexion
+          </Button>
+        </div>
       </div>
     );
   }
