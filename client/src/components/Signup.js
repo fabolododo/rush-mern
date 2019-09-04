@@ -1,7 +1,9 @@
 import React, {Component} from "react";
-import { Link } from "react-router-dom";
 import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import API from "../utils/API";
+import logo from "../logo/logo.png";
+import { Navbar, Nav } from "react-bootstrap";
+
 
 export class Signup extends Component {
   constructor(props) {
@@ -74,6 +76,25 @@ export class Signup extends Component {
     const {name, email, password, cpassword, snackMessage } = this.state;
     return (
       <div className="Login">
+        <Navbar bg="dark" variant="dark">
+          <Navbar.Brand>
+          <img
+            alt=""
+            src={logo}
+            width="30"
+            height="30"
+            className="d-inline-block align-top"
+          />
+          MicroBloggos
+          </Navbar.Brand>
+          <Nav className="mr-auto">
+            <Nav.Link href="/">Login</Nav.Link>
+            <Nav.Link href="/signup">Sign Up</Nav.Link>
+          </Nav>
+        </Navbar>
+        <br/>
+        <br/>
+        <h1>Sign Up</h1>
          {this.state.displaySnackBar ? (
           <div
             id="snackbar"
@@ -82,45 +103,44 @@ export class Signup extends Component {
             {snackMessage}
           </div>
         ) : null}
-        <FormGroup controlId="name" bssize="large">
-          <FormLabel>name</FormLabel>
-          <FormControl
-            autoFocus
-            type="text"
-            value={name}
-            onChange={this.handleChange}
-          />
-        </FormGroup>
-        <FormGroup controlId="email" bssize="large">
-          <FormLabel>Email</FormLabel>
-          <FormControl
-            type="email"
-            value={email}
-            onChange={this.handleChange}
-          />
-        </FormGroup>
-        <FormGroup controlId="password" bssize="large">
-          <FormLabel>Password</FormLabel>
-          <FormControl
-            value={password}
-            onChange={this.handleChange}
-            type="password"
-          />
-        </FormGroup>
-        <FormGroup controlId="cpassword" bssize="large">
-          <FormLabel>Confirm Password</FormLabel>
-          <FormControl
-            value={cpassword}
-            onChange={this.handleChange}
-            type="password"
-          />
-        </FormGroup>
-        <Button onClick={this.send} block bssize="large" type="submit">
-          Inscription
-        </Button>
-        <Link to='/'>
-          Login
-        </Link>
+        <div className="LoginForm">
+          <FormGroup controlId="name" bssize="large">
+            <FormLabel>name</FormLabel>
+            <FormControl
+              autoFocus
+              type="text"
+              value={name}
+              onChange={this.handleChange}
+            />
+          </FormGroup>
+          <FormGroup controlId="email" bssize="large">
+            <FormLabel>Email</FormLabel>
+            <FormControl
+              type="email"
+              value={email}
+              onChange={this.handleChange}
+            />
+          </FormGroup>
+          <FormGroup controlId="password" bssize="large">
+            <FormLabel>Password</FormLabel>
+            <FormControl
+              value={password}
+              onChange={this.handleChange}
+              type="password"
+            />
+          </FormGroup>
+          <FormGroup controlId="cpassword" bssize="large">
+            <FormLabel>Confirm Password</FormLabel>
+            <FormControl
+              value={cpassword}
+              onChange={this.handleChange}
+              type="password"
+            />
+          </FormGroup>
+          <Button onClick={this.send} block bssize="large" variant="dark" type="submit">
+            Signup
+          </Button>
+        </div>
       </div>
     );
   }
