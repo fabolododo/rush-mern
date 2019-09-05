@@ -4,12 +4,12 @@ const Post = require("../models/post.model.js");
 
 async function addPost(req, res) {
      try {
-        const user = await User.findById(req.user.id).select('-password');
+        const user = await User.findById(req.body.id).select('-password');
 
-        const newPost = new Post({
+        let newPost = new Post({
             text: req.body.text,
             name: user.name,
-            user: req.user.id
+            user: req.body.id
         });
 
         const post = await newPost.save();
