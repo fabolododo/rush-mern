@@ -49,6 +49,8 @@ const router = express.Router();
 app.use("/users", router);
 require(__dirname + "/routes/user.route")(router);
 
+app.use("/posts", router);
+require(__dirname + "/routes/post.route")(router);
 
 //Définition et mise en place du port d'écoute
 const port = 4242;
