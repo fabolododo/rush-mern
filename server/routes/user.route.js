@@ -7,6 +7,4 @@ module.exports = function (app) {
     app.get('/listUser/:id',UserController.DetailsUser);
     app.put('/listUser/:id/update',UserController.UpdateUser);
     app.delete('/listUser/:id/delete',UserController.DeleteUser);
-    
-    
 }
