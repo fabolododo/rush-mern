@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Button, Card, Modal, ButtonGroup } from "react-bootstrap";
+import { Button, Card, Modal, ButtonGroup, Image } from "react-bootstrap";
 import API from "../utils/API";
 import axios from "axios";
+import avatar from "../avatar/avatarMan.png";
 import logo from "../logo/logo.png";
 import { Navbar, Nav } from "react-bootstrap";
 
@@ -138,10 +139,15 @@ handleSnackbar = () => {
         </Navbar>
         <br/>
         <h1>User Details</h1>
-        <Card>
-          <Card.Header as="h5">Featured</Card.Header>
+        <Card  style={{ width: '20rem' }}>
+          <Card.Header as="h3">{ this.state.name }</Card.Header>
           <Card.Body>
-            <Card.Title>{ this.state.name }</Card.Title>
+            <Card.Title>
+            <Image src={avatar}
+              width="100"
+              height="100"
+              roundedCircle />
+            </Card.Title>
             <Card.Text>
               { this.state.email }
             </Card.Text>
@@ -151,11 +157,14 @@ handleSnackbar = () => {
             <ButtonGroup className="mr-2" aria-label="First group">
               <Button variant="dark" onClick={this.redirectListUser}>List User</Button>
             </ButtonGroup>
+            <ButtonGroup>
+            <Button onClick={this.disconnect} variant="dark" block bssize="large" type="submit">
+          Logout
+        </Button>
+            </ButtonGroup>
           </Card.Body>
         </Card>
-        <Button onClick={this.disconnect} variant="dark" block bssize="large" type="submit">
-          Se déconnecter
-        </Button>
+        
 
         <Modal show={this.state.userModal} style={{ opacity: 1 }}>
           <Modal.Header>
