@@ -38,5 +38,55 @@ async function listPosts(req, res) {
    })
 }
 
-exports.addPost = addPost;
-exports.listPosts = listPosts;
+
+async function UserPosts(req, res) {
+
+   Post.findById(req.params.id, function(err, posts){
+     console.log(req.params.id);
+     
+     if(err){
+       res.status(400);
+       res.send('Something went wrong');
+       return;
+     }
+     console.log(posts);
+     
+     res.send(posts);
+   
+   });
+ 
+}
+
+async function UpdatePost(req, res){
+
+   Post.findByIdAndUpdate(req.params.id, { $set : newPost } , function(err, posts){
+       
+      if(err){
+        res.status(400);
+        res.send(err);
+        return;
+      }
+       res.send({posts});
+   });
+};
+   
+   
+async function DeletePost(req, res) {
+   
+   Post.findByIdAndRemove(req.params.id,function(err, posts){
+      if(!posts)
+      res.status(404).send('data not found');
+      else
+        
+      posts.delete().then( posts => {
+         res.send('Post deleted');
+      })
+   });
+}
+   
+   
+   exports.DeletePost = DeletePost;
+   exports.UpdatePost = UpdatePost;
+   exports.UserPosts = UserPosts;
+   exports.listPosts = listPosts;
+   exports.addPost = addPost;
