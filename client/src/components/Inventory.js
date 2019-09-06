@@ -25,7 +25,7 @@ export class Inventory extends Component {
       author: "",
       postId: "",
       snackMessage: "",
-      userModal: false,
+      postModal: false,
       displaySnackBar: false
     };
 
@@ -84,7 +84,7 @@ export class Inventory extends Component {
   handleNewPost = e => {
     const id = this.props.match.params.id;
     const { text } = this.state;
-    
+
     if (!text || text.length === 0) {
         this.displayHandleSnackbar("Message required");
         return;
@@ -93,7 +93,7 @@ export class Inventory extends Component {
     var newPost = {
         id,
         text
-    };    
+    };
 
     var urlAddPost = HOST + `/posts/addPost/`;
     axios
@@ -105,8 +105,7 @@ export class Inventory extends Component {
         console.log(response.data.newPost);
         posts.push(response.data.newPost);
         this.setState({posts});
-        // this.setState({ text: this.state.newText });
-        // this.setState({ author: this.state.newAuthor });
+
       })
       .catch(err => {
         console.log(err);
@@ -191,19 +190,39 @@ export class Inventory extends Component {
 
   };
 
-  handleDeleteProduct = deleteProduct => {
+  //Update Post
+  handleEditPost = editPost => {
+
     axios
-      .delete(HOST + `/products/` + deleteProduct._id + `/delete`)
+    .put( `http://localhost:4242/posts/listPost/` + this.state.id + `/update`, editPost)
+    .then(response => {
+        console.log(response.data.text);
+      this.setState({post: response.data});
+        this.displayHandleSnackbar("Post Updated Successfully!");
+    })
+    .catch(err => {
+      console.log(err);
+      this.setState({ snackMessage: err.response });
+      this.handleSnackbar();
+    });
+
+  };
+
+  handleDeletePost = deletePost => {
+      console.log(deletePost);
+    axios
+      .delete(HOST + `/posts/listPost/` + deletePost._id + `/delete`)
       .then(response => {
-        this.setState({ snackMessage: "Product Deleted Successfully!" });
+        this.setState({ snackMessage: "Post Deleted Successfully!" });
         this.handleSnackbar();
-        let products = this.state.products;
-        products = products.filter(product => product._id !== response.data.product._id);
-        this.setState({products});
+        let posts = this.state.posts;
+        console.log(response.data.post._id);
+        posts = posts.filter(post => post._id !== response.data.post._id);
+        this.setState({posts});
       })
       .catch(err => {
         console.log(err);
-        this.setState({ snackMessage: "Product Delete Failed!" });
+        this.setState({ snackMessage: "Post Delete Failed!" });
         this.handleSnackbar();
       });
   };
@@ -225,6 +244,7 @@ export class Inventory extends Component {
                     {...post}
                     key={index}
                     onEditPost={this.handleEditPost}
+                    onDeletePost={this.handleDeletePost}
                     />
                 ));
             }
@@ -279,6 +299,14 @@ export class Inventory extends Component {
                 </Card>
                 </Col>
                 <Col md={8}>
+                {this.state.displaySnackBar ? (
+            <div
+                id="snackbar"
+                style={{fontSize:"25px", color:"red", textAlign:"center"}}
+            >
+                {snackMessage}
+            </div>
+            ) : null}
                 <table className="table">
                     <thead>
                     <tr>
@@ -321,8 +349,8 @@ export class Inventory extends Component {
                     <label className="col-md-4 control-label">Name</label>
                     <div className="col-md-4">
                     <input
-                        id="name"
-                        name="name"
+                        id="text"
+                        name="text"
                         placeholder="Name"
                         onChange={this.handleName}
                         className="form-control"
@@ -381,15 +409,7 @@ export class Inventory extends Component {
             </Modal.Footer>
             </Modal>
 
-            {this.state.displaySnackBar ? (
-                <div
-                    id="snackbar"
-                    style={{fontSize:"25px", color:"red", textAlign:"center"}}
-                >
-                    {snackMessage}
-                </div>
-                ) : null
-            }
+           
         </div>
         );
     }

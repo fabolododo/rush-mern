@@ -21,7 +21,7 @@ class Post extends Component {
   }
 
   handleText = e => {
-    this.setState({ newtext: e.target.value });
+    this.setState({ newText: e.target.value });
   };
 
   handleAuthor = e => {
@@ -48,6 +48,7 @@ class Post extends Component {
       author: this.state.newAuthor,
       _id: this.props._id
     };
+    console.log(editPost);
     this.props.onEditPost(editPost);
 
     axios
@@ -71,7 +72,7 @@ class Post extends Component {
 
     const result = window.confirm("Do you really want to delete this item ?");
     if (result === true) {
-      this.props.onDeletepost(deletePost);
+      this.props.onDeletePost(deletePost);
     }
   };
 
@@ -79,7 +80,7 @@ class Post extends Component {
 
   render() {
     const {
-      newPost,
+      newText,
       newAuthor,
       text,
       author,
@@ -123,12 +124,12 @@ class Post extends Component {
                 <label className="col-md-4 control-label">Post</label>
                 <div className="col-md-4">
                   <input
-                    id="post"
-                    name="post"
-                    placeholder="Post"
-                    onChange={this.handlePost}
+                    id="text"
+                    name="text"
+                    placeholder="Text"
+                    onChange={this.handleText}
                     className="form-control"
-                    value={newPost}
+                    value={newText}
                   />
                 </div>
               </div>
