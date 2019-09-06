@@ -34,7 +34,7 @@ async function listPosts(req, res) {
          res.send(err);
          return;
       }
-      res.send(posts)
+      res.send( posts )
    })
 }
 

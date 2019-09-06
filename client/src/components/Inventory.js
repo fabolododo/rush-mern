@@ -58,11 +58,14 @@ export class Inventory extends Component {
             })
 
       // List of all Posts
-    var urlListPost = HOST + `/posts/listPosts/`;
-    axios.get(urlListPost).then(response => {
+    var urlListPost = HOST + `/posts/listPost/`;
+    axios.get(urlListPost)
+        .then(response => {
       this.setState({ posts: response.data });
-      
-    });
+        })
+        .catch(function (error){
+            console.log(error);
+        })
 
     // API request User
     var urlUserDetails = HOST + `/users/listUser/`;
