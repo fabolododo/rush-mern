@@ -58,33 +58,31 @@ async function UserPosts(req, res) {
 }
 
 async function UpdatePost(req, res){
-
-   Post.findByIdAndUpdate(req.params.id, { $set : newPost } , function(err, posts){
+   console.log(req.body);
+   Post.findByIdAndUpdate(req.params.id, { $set : req.body } , function(err, post){
        
       if(err){
         res.status(400);
         res.send(err);
         return;
       }
-       res.send({posts});
+       res.send({post});
    });
 };
    
    
 async function DeletePost(req, res) {
    
-   Post.findByIdAndRemove(req.params.id,function(err, posts){
-      if(!posts)
-      res.status(404).send('data not found');
-      else
-        
-      posts.delete().then( posts => {
-         res.send('Post deleted');
-      })
+   Post.findByIdAndRemove(req.params.id,function(err, post) {
+      if(err){
+         res.status(400)
+            .send(err);
+         return;
+      }
+      res.send({ post });
    });
 }
-   
-   
+
    exports.DeletePost = DeletePost;
    exports.UpdatePost = UpdatePost;
    exports.UserPosts = UserPosts;
