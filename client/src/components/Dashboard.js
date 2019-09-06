@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { Button, Card, Container, Modal, ButtonGroup, Image, Col, Row, FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import API from "../utils/API";
-import axios from "axios";
 import avatar from "../avatar/avatarMan.png";
 import logo from "../logo/logo.png";
 import { Navbar, Nav } from "react-bootstrap";
+import axios from "axios";
+
 
 
 export class Dashboard extends Component {
