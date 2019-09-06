@@ -3,23 +3,39 @@ const Post = require("../models/post.model.js");
 
 
 async function addPost(req, res) {
-     try {
+   //   try {
         const user = await User.findById(req.body.id).select('-password');
-
+         console.log(req.body.post);
         let newPost = new Post({
-            text: req.body.text,
+            text: req.body.post,
             name: user.name,
             user: req.body.id
         });
+        console.log(newPost);
 
-        const post = await newPost.save();
-        res.json({ post });
+        newPost.save(function(err) {
+           if (err) {
+              res.status(400);
+              res.send(err);
+              console.log("err ", err );
+              console.log(err);
+              return;
+           }
+           res.send({ newPost })
+        })
 
-     } catch (error) {
-        console.error("request invalid");
-        return res.status(500).json({ error });
-        
-     }
+}
+
+async function listPosts(req, res) {
+   Post.find({}, function(err, products) {
+      if (err) {
+         res.status(400);
+         res.send(err);
+         return;
+      }
+      res.send(products)
+   })
 }
 
 exports.addPost = addPost;
+exports.listPosts = listPosts;

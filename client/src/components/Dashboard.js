@@ -65,7 +65,7 @@ export class Dashboard extends Component {
     console.log(newPost);
 
       axios
-      .post(`localhost:4242/posts/addPost`, newPost)
+      .post(`http://localhost:4242/posts/addPost`, newPost)
       .then(response => {
         this.setState({ snackMessage: "Post Added Successfully!" });
         this.handleSnackbar()
