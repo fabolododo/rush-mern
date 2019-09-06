@@ -7,8 +7,8 @@ async function addPost(req, res) {
         const user = await User.findById(req.body.id).select('-password');
          console.log(req.body.post);
         let newPost = new Post({
-            text: req.body.post,
-            name: user.name,
+            text: req.body.text,
+            author: user.name,
             user: req.body.id
         });
         console.log(newPost);
@@ -21,19 +21,20 @@ async function addPost(req, res) {
               console.log(err);
               return;
            }
+           console.log({ newPost })
            res.send({ newPost })
         })
 
 }
 
 async function listPosts(req, res) {
-   Post.find({}, function(err, products) {
+   Post.find({}, function(err, posts) {
       if (err) {
          res.status(400);
          res.send(err);
          return;
       }
-      res.send(products)
+      res.send(posts)
    })
 }
 
