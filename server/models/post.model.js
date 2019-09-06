@@ -13,7 +13,7 @@ const PostSchema = new Schema({
     required: true,
   },
 
-  name: {
+  author: {
     type: String,
   },
 
