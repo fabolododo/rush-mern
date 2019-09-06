@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Card, Modal, ButtonGroup, Image } from "react-bootstrap";
+import { Button, Card, Container, Modal, ButtonGroup, Image, Col, Row, FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import API from "../utils/API";
 import axios from "axios";
 import avatar from "../avatar/avatarMan.png";
@@ -16,12 +16,14 @@ export class Dashboard extends Component {
       email: "",
       password: "",
       id: "",
+      post: "",
       userModal: false,
       displaySnackBar: false
     };
     this.handleName = this.handleName.bind(this);
     this.handleEmail = this.handleEmail.bind(this);
     this.handlePassword = this.handlePassword.bind(this);
+    this.handlePost = this.handlePost.bind(this);
   }
 
   componentDidMount() {
@@ -46,6 +48,35 @@ export class Dashboard extends Component {
         })
   };
 
+  send = async () => {
+    const id = this.props.match.params.id;
+    
+    const { post } = this.state;
+    if (!post || post.length === 0) {
+      this.displayHandleSnackbar("");
+      return;
+    };
+
+    var newPost = {
+      id,
+      post
+    }
+
+    console.log(newPost);
+
+      axios
+      .post(`http://localhost:4242/posts/addPost`, newPost)
+      .then(response => {
+        this.setState({ snackMessage: "Post Added Successfully!" });
+        this.handleSnackbar()
+    }) 
+      .catch (error => {
+      console.error(error);
+      this.setState({ snackMessage: "Post failed to save!" });
+      this.handleSnackbar();
+    });
+  };
+
   handleName = e => {
     this.setState({ newName: e.target.value });
   };
@@ -60,6 +91,10 @@ export class Dashboard extends Component {
 
   handleCPassword = e => {
     this.setState({ newCPassword: e.target.value });
+  };
+
+  handlePost = e => {
+    this.setState({ post: e.target.value });
   };
 
   displayHandleSnackbar = (message) => {
@@ -139,31 +174,82 @@ handleSnackbar = () => {
         </Navbar>
         <br/>
         <h1>User Details</h1>
-        <Card  style={{ width: '20rem' }}>
-          <Card.Header as="h3">{ this.state.name }</Card.Header>
-          <Card.Body>
-            <Card.Title>
-            <Image src={avatar}
-              width="100"
-              height="100"
-              roundedCircle />
-            </Card.Title>
-            <Card.Text>
-              { this.state.email }
-            </Card.Text>
-            <ButtonGroup className="mr-2" aria-label="First group">
-              <Button variant="dark" onClick={() => this.setState({ userModal: true })}>Edit User</Button>
-            </ButtonGroup>
-            <ButtonGroup className="mr-2" aria-label="First group">
-              <Button variant="dark" onClick={this.redirectListUser}>List User</Button>
-            </ButtonGroup>
-            <ButtonGroup>
-            <Button onClick={this.disconnect} variant="dark" block bssize="large" type="submit">
-          Logout
-        </Button>
-            </ButtonGroup>
-          </Card.Body>
-        </Card>
+        <Container>
+          <Row>
+            <Col md = {4}>
+              <Card>
+                <Card.Header as="h3">{ this.state.name }</Card.Header>
+                <Card.Body>
+                  <Card.Title>
+                  <Image src={avatar}
+                    width="100"
+                    height="100"
+                    roundedCircle />
+                  </Card.Title>
+                  <Card.Text>
+                    { this.state.email }
+                  </Card.Text>
+                  <ButtonGroup className="mr-2" aria-label="First group">
+                    <Button variant="dark" onClick={() => this.setState({ userModal: true })}>Edit User</Button>
+                  </ButtonGroup>
+                  <ButtonGroup className="mr-2" aria-label="First group">
+                    <Button variant="dark" onClick={this.redirectListUser}>List User</Button>
+                  </ButtonGroup>
+                  <ButtonGroup>
+                  <Button onClick={this.disconnect} variant="dark" block bssize="large" type="submit">
+                Logout
+              </Button>
+                  </ButtonGroup>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={8}>
+              <Card  style={{ width: '50' }}>
+                <Card.Header as="h3">{ this.state.name }</Card.Header>
+                <Card.Body>
+                  <Card.Title>
+                  <Image src={avatar}
+                    width="100"
+                    height="100"
+                    roundedCircle />
+                  </Card.Title>
+                  <Card.Text>
+                    { this.state.email }
+                  </Card.Text>
+                  <ButtonGroup className="mr-2" aria-label="First group">
+                    <Button variant="dark" onClick={() => this.setState({ userModal: true })}>Edit User</Button>
+                  </ButtonGroup>
+                  <ButtonGroup className="mr-2" aria-label="First group">
+                    <Button variant="dark" onClick={this.redirectListUser}>List User</Button>
+                  </ButtonGroup>
+                  <ButtonGroup>
+                  <Button onClick={this.disconnect} variant="dark" block bssize="large" type="submit">
+                Logout
+              </Button>
+                  </ButtonGroup>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+          <br/>
+          <Row>
+            <Col md={{ div: 2, offset: 4 }}>
+            <div className="PostForm">
+            <FormGroup controlId="post">
+              <FormLabel>Add Post</FormLabel>
+              <FormControl
+               as="textarea"
+               rows="8"
+               onChange={this.handlePost}
+                />
+            </FormGroup>
+          <Button onClick={this.send} block bssize="large" variant="dark" type="submit">
+            Add Post
+          </Button>
+        </div>
+            </Col>
+          </Row>
+        </Container>
         
 
         <Modal show={this.state.userModal} style={{ opacity: 1 }}>
@@ -171,7 +257,7 @@ handleSnackbar = () => {
             <Modal.Title>Edit user</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <form className="form-horizontal" name="newUserForm">
+            <form className="form-horizontal" name="editUserForm">
               <div className="form-group">
                 <label className="col-md-4 control-label">Name</label>
                 <div className="col-md-4">
