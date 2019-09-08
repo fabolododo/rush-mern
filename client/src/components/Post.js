@@ -54,6 +54,7 @@ class Post extends Component {
     axios
     .put( `http://localhost:4242/posts/listPost/` + editPost._id + `/update`, editPost)
     .then(response => {
+      this.setState({ postModal: false });
       this.setState({ text: this.state.newText });
       this.setState({ author: this.state.newAuthor });
     })
