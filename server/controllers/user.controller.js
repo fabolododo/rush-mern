@@ -204,8 +204,7 @@ async function DetailsUser(req, res) {
   
   });
 
-  }
-
+}
 
 
 //On exporte nos deux fonctions
